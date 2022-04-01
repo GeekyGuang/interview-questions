@@ -10,9 +10,6 @@
     #xxx {
       width: 100px;
       height: 100px;
-      position: absolute;
-      left: 0;
-      top: 0;
       border: 1px solid blue;
     }
   </style>
@@ -23,23 +20,14 @@
 
   <script>
     let dragging = false
-    let position = []
     xxx.addEventListener('mousedown', (e) => {
       dragging = true
-      position = [e.clientX, e.clientY]
     })
 
     document.addEventListener('mousemove', (e) => {
       if (dragging === false) return
 
-      const deltaX = e.clientX - position[0]
-      const deltaY = e.clientY - position[1]
-      const left = parseInt(xxx.style.left || 0)
-      const top = parseInt(xxx.style.top || 0)
-      xxx.style.left = left + deltaX + 'px'
-      xxx.style.top = top + deltaY + 'px'
-
-      position = [e.clientX, e.clientY]
+      xxx.style.transform = `translate(${e.clientX - 50}px, ${e.clientY - 50}px)`
     })
 
     document.addEventListener('mouseup', () => {
