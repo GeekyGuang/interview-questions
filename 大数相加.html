@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // a,b 都为 string
+    function add(a, b) {
+      const maxLength = Math.max(a.length, b.length)
+      let overflow = false
+      let sum = ''
+
+      for (let i = 1; i <= maxLength; i++) {
+        const ai = a[a.length - i] || '0'
+        const bi = b[b.length - i] || '0'
+        let sumi = parseInt(ai) + parseInt(bi) + (overflow ? 1 : 0)
+        if (sumi >= 10) {
+          overflow = true
+          sumi = sumi - 10
+        } else {
+          overflow = false
+        }
+
+        sum = sumi + sum
+      }
+
+      // 加到最后也要考虑进位
+      if (overflow) {
+        sum = '1' + sum
+      }
+
+      return sum
+    }
+
+    console.log(add("11111111101234567", "77777777707654321"))
+    console.log(add("911111111101234567", "77777777707654321"))
+  </script>
+</body>
+
+</html>
