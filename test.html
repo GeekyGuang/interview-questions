@@ -10,26 +10,26 @@
 
 <body>
   <script>
-    const s = 'abcdabdefabefksdjska'
+    function quickSort(numbers) {
+      if (numbers.length <= 1) return numbers
+      const pivotIndex = Math.floor(numbers.length / 2)
+      const pivot = numbers.splice(pivotIndex, 1)[0]
+      let left = []
+      let right = []
 
-    function lengthOfLongestSubstring(s) {
-      let str = ''
-      let len = 0
-      for (let i = 0; i < s.length; i++) {
-        const char = s.charAt(i)
-        const index = str.indexOf(char)
-        if (index < 0) {
-          str += char
-          len = len < str.length ? str.length : len
+      for (const item of numbers) {
+        if (item <= pivot) {
+          left.push(item)
         } else {
-          str = str.substr(index + 1) + char
+          right.push(item)
         }
       }
 
-      return len
+      return quickSort(left).concat([pivot], quickSort(right))
+
     }
 
-    console.log(lengthOfLongestSubstring(s))
+    console.log(quickSort([1, 5, 7, 3, 7, 9, 2, 4, 8]))
   </script>
 </body>
 
