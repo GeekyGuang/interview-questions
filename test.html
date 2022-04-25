@@ -10,25 +10,26 @@
 
 <body>
   <script>
-    const numbers = [2, 7, 11, 12]
-    const target = 18
+    const s = 'abcdabdefabefksdjska'
 
-    function twoNumbers(numbers, target) {
-      const map = {}
-      for (let i = 0; i < numbers.length; i++) {
-        const number = numbers[i]
-        const diff = target - number
-        if (diff in map) {
-          return [i, map[diff]]
+    function lengthOfLongestSubstring(s) {
+      let str = ''
+      let len = 0
+      for (let i = 0; i < s.length; i++) {
+        const char = s.charAt(i)
+        const index = str.indexOf(char)
+        if (index < 0) {
+          str += char
+          len = len < str.length ? str.length : len
         } else {
-          map[numbers[i]] = i
+          str = str.substr(index + 1) + char
         }
       }
 
-      return []
+      return len
     }
 
-    console.log(twoNumbers(numbers, target))
+    console.log(lengthOfLongestSubstring(s))
   </script>
 </body>
 
