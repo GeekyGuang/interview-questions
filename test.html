@@ -10,26 +10,62 @@
 
 <body>
   <script>
-    Promise.all2 = function (promiseList) {
-      return new Promise((resolve, reject) => {
-        const results = []
-        let count = 0
-        promiseList.forEach((promise, index) => {
-          promise.then((result) => {
-            count += 1
-            results[index] = result
-            if (count === promiseList.length) {
-              resolve(results)
+    function deepClone(a, map = new WeakMap()) {
+      if (a instanceof Object) {
+        if (map.get(a)) {
+          return map.get(a)
+        }
+
+        let result
+
+        if (a instanceof Array) {
+          result = []
+        } else if (a instanceof Function) {
+          if (a.prototype) {
+            result = function () {
+              return a.apply(this, arguments)
             }
-          }, (err) => {
-            reject(err)
-          })
-        })
-      })
+          } else {
+            result = (...args) => a.call(undefined, ...args)
+          }
+        } else if (a instanceof Date) {
+          result = new Date(a - 0)
+        } else if (a instanceof RegExp) {
+          result = new RegExp(a.source, a.flags)
+        } else {
+          result = {}
+        }
+
+        map.set(a, result)
+
+        for (let key in a) {
+          if (a.hasOwnProperty(key)) {
+            result[key] = deepClone(a[key], map)
+          }
+        }
+
+        return result
+      } else {
+        return a
+      }
     }
 
-    Promise.all2([Promise.resolve(1), Promise.resolve('hello'), Promise.resolve(3)]).then((res) => console.log(res), err => console.log(err))
-    Promise.all([Promise.resolve(1), Promise.resolve('hello'), Promise.resolve(3)]).then((res) => console.log(res), err => console.log(err))
+    const obj = {
+      number: 1, bool: false, str: 'hi', empty1: undefined, empty2: null,
+      array: [
+        { name: 'jack', age: 23 },
+        { name: 'rose', age: 24 }
+      ],
+      date: new Date(2000, 0, 1, 20, 30, 0),
+      regexp: /\.jsx/i,
+      obj: { name: 'jack', age: 18 },
+      f1: (a, b) => a + b,
+      f2: function (a, b) { return a + b }
+    }
+
+    obj.g = obj
+    const b = deepClone(obj)
+    console.log(b)
   </script>
 </body>
 
