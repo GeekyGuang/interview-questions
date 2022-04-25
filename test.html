@@ -10,26 +10,22 @@
 
 <body>
   <script>
-    function quickSort(numbers) {
-      if (numbers.length <= 1) return numbers
-      const pivotIndex = Math.floor(numbers.length / 2)
-      const pivot = numbers.splice(pivotIndex, 1)[0]
-      let left = []
-      let right = []
-
-      for (const item of numbers) {
-        if (item <= pivot) {
-          left.push(item)
-        } else {
-          right.push(item)
-        }
+    function debounce(fn, delay = 500) {
+      let timer = null
+      return function () {
+        if (timer) window.clearTimeout(timer)
+        const context = this
+        timer = setTimeout(() => {
+          fn.apply(context, arguments)
+          timer = null
+        }, delay)
       }
-
-      return quickSort(left).concat([pivot], quickSort(right))
-
     }
 
-    console.log(quickSort([1, 5, 7, 3, 7, 9, 2, 4, 8]))
+    const f1 = debounce((a, b, c) => console.log(a, b, c), 1000)
+    f1(1, 2, 3)
+    f1(1, 2, 3)
+    f1(1, 2, 3)
   </script>
 </body>
 
