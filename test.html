@@ -10,19 +10,20 @@
 
 <body>
   <script>
-    function debounce(fn, delay = 500) {
-      let timer = null
+    function throttle(fn, delay = 500) {
+      let canUse = true
       return function () {
-        if (timer) window.clearTimeout(timer)
-        const context = this
-        timer = setTimeout(() => {
-          fn.apply(context, arguments)
-          timer = null
-        }, delay)
+        if (canUse) {
+          canUse = false
+          fn.apply(this, arguments)
+          setTimeout(() => {
+            canUse = true
+          }, delay)
+        }
       }
     }
 
-    const f1 = debounce((a, b, c) => console.log(a, b, c), 1000)
+    const f1 = throttle((a, b, c) => console.log(a, b, c), 1000)
     f1(1, 2, 3)
     f1(1, 2, 3)
     f1(1, 2, 3)
