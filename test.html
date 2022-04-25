@@ -10,23 +10,41 @@
 
 <body>
   <script>
-    function throttle(fn, delay = 500) {
-      let canUse = true
-      return function () {
-        if (canUse) {
-          canUse = false
-          fn.apply(this, arguments)
-          setTimeout(() => {
-            canUse = true
-          }, delay)
+    const eventHub = {
+      map: {},
+      on(name, fn) {
+        if (!(name in this.map)) {
+          this.map[name] = []
         }
+        this.map[name].push(fn)
+      },
+      emit(name, data) {
+        if (name in this.map) {
+          this.map[name].map(fn => fn.apply(undefined, data))
+        }
+      },
+      off(name, fn) {
+        if (name in this.map) {
+          const index = this.map[name].indexOf(fn)
+          if (index >= 0) {
+            this.map[name].splice(index, 1)
+          }
+        }
+      },
+      once(name, fn) {
+        const _fn = () => {
+          fn()
+          this.off(name, _fn)
+        }
+        this.on(name, _fn)
       }
     }
 
-    const f1 = throttle((a, b, c) => console.log(a, b, c), 1000)
-    f1(1, 2, 3)
-    f1(1, 2, 3)
-    f1(1, 2, 3)
+    const fn = () => console.log('hello')
+
+    eventHub.on('click', fn)
+    eventHub.off('click', fn)
+    eventHub.emit('click')
   </script>
 </body>
 
