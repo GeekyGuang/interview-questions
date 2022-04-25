@@ -10,23 +10,33 @@
 
 <body>
   <script>
-    function curry(func) {
-      return function curried(...args) {
-        if (args.length >= func.length) {
-          return func.apply(this, args)
+    function add(a, b) {
+      const maxLength = Math.max(a.length, b.length)
+      let overflow = false
+      let sum = ''
+
+      for (let i = 1; i < maxLength; i++) {
+        const ai = a[a.length - i] || '0'
+        const bi = b[a.length - i] || '0'
+        let sumi = parseInt(ai) + parseInt(bi) + (overflow ? 1 : 0)
+        if (sumi >= 10) {
+          overflow = true
+          sumi -= 10
         } else {
-          return function (...args2) {
-            return curried.apply(this, args.concat(args2))
-          }
+          overflow = false
         }
+
+        sum = sumi + sum
       }
-    }
-    function sum(a, b, c) {
-      return a + b + c
+
+      if (overflow) {
+        sum = '1' + sum
+      }
+
+      return sum
     }
 
-    const curriedSum = curry(sum)
-    console.log(curriedSum(1)(2)(3))
+    console.log(add('4444444444444444', '7777777777777777'))
   </script>
 </body>
 
