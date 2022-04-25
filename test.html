@@ -10,62 +10,21 @@
 
 <body>
   <script>
-    function deepClone(a, map = new WeakMap()) {
-      if (a instanceof Object) {
-        if (map.get(a)) {
-          return map.get(a)
+    const arr = [1, 2, 3, 'a', 'a', 2, 5, 7]
+    function uniq(arr) {
+      const map = new Map()
+      for (const i of arr) {
+        if (map.get(i)) {
+          continue
         }
 
-        let result
-
-        if (a instanceof Array) {
-          result = []
-        } else if (a instanceof Function) {
-          if (a.prototype) {
-            result = function () {
-              return a.apply(this, arguments)
-            }
-          } else {
-            result = (...args) => a.call(undefined, ...args)
-          }
-        } else if (a instanceof Date) {
-          result = new Date(a - 0)
-        } else if (a instanceof RegExp) {
-          result = new RegExp(a.source, a.flags)
-        } else {
-          result = {}
-        }
-
-        map.set(a, result)
-
-        for (let key in a) {
-          if (a.hasOwnProperty(key)) {
-            result[key] = deepClone(a[key], map)
-          }
-        }
-
-        return result
-      } else {
-        return a
+        map.set(i, true)
       }
+
+      return [...map.keys()]
     }
 
-    const obj = {
-      number: 1, bool: false, str: 'hi', empty1: undefined, empty2: null,
-      array: [
-        { name: 'jack', age: 23 },
-        { name: 'rose', age: 24 }
-      ],
-      date: new Date(2000, 0, 1, 20, 30, 0),
-      regexp: /\.jsx/i,
-      obj: { name: 'jack', age: 18 },
-      f1: (a, b) => a + b,
-      f2: function (a, b) { return a + b }
-    }
-
-    obj.g = obj
-    const b = deepClone(obj)
-    console.log(b)
+    console.log(uniq(arr))
   </script>
 </body>
 
