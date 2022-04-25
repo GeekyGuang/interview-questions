@@ -10,33 +10,25 @@
 
 <body>
   <script>
-    function add(a, b) {
-      const maxLength = Math.max(a.length, b.length)
-      let overflow = false
-      let sum = ''
+    const numbers = [2, 7, 11, 12]
+    const target = 18
 
-      for (let i = 1; i < maxLength; i++) {
-        const ai = a[a.length - i] || '0'
-        const bi = b[a.length - i] || '0'
-        let sumi = parseInt(ai) + parseInt(bi) + (overflow ? 1 : 0)
-        if (sumi >= 10) {
-          overflow = true
-          sumi -= 10
+    function twoNumbers(numbers, target) {
+      const map = {}
+      for (let i = 0; i < numbers.length; i++) {
+        const number = numbers[i]
+        const diff = target - number
+        if (diff in map) {
+          return [i, map[diff]]
         } else {
-          overflow = false
+          map[numbers[i]] = i
         }
-
-        sum = sumi + sum
       }
 
-      if (overflow) {
-        sum = '1' + sum
-      }
-
-      return sum
+      return []
     }
 
-    console.log(add('4444444444444444', '7777777777777777'))
+    console.log(twoNumbers(numbers, target))
   </script>
 </body>
 
