@@ -6,40 +6,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-    #xxx {
-      width: 100px;
-      height: 100px;
-      background: pink;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  </style>
 </head>
 
 <body>
-  <div id="xxx"></div>
   <script>
-    let dragging = false
-    let position = []
-    xxx.addEventListener('mousedown', function (e) {
-      dragging = true
-      position = [e.clientX, e.clientY]
-    })
+    function curry(func) {
+      return function curried(...args) {
+        if (args.length >= func.length) {
+          return func.apply(this, args)
+        } else {
+          return function (...args2) {
+            return curried.apply(this, args.concat(args2))
+          }
+        }
+      }
+    }
 
-    document.addEventListener('mousemove', function (e) {
-      if (!dragging) return
-      const deltaX = e.clientX - position[0]
-      const deltaY = e.clientY - position[1]
-      xxx.style.left = (parseInt(xxx.style.left) || 0) + deltaX + 'px'
-      xxx.style.top = (parseInt(xxx.style.top) || 0) + deltaY + 'px'
-      position = [e.clientX, e.clientY]
-    })
+    function sum(a, b, c) {
+      return a + b + c
+    }
 
-    document.addEventListener('mouseup', function (e) {
-      dragging = false
-    })
+    const curriedSum = curry(sum)
+    console.log(curriedSum(1)(2)(3))
   </script>
 </body>
 
