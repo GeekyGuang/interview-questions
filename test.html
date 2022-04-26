@@ -10,24 +10,61 @@
 
 <body>
   <script>
-    function curry(func) {
-      return function curried(...args) {
-        if (args.length >= func.length) {
-          return func.apply(this, args)
-        } else {
-          return function (...args2) {
-            return curried.apply(this, args.concat(args2))
-          }
+    function deepClone(a, map = new WeakMap()) {
+      if (a instanceof Object) {
+        if (map.get(a)) {
+          return map.get(a)
         }
+
+        let result
+        if (a instanceof Array) {
+          result = []
+        } else if (a instanceof Function) {
+          if (a.prototype) {
+            result = function () {
+              return a.apply(this, arguments)
+            }
+          } else {
+            result = (...args) => {
+              return a.call(undefined, ...args)
+            }
+          }
+        } else if (a instanceof Date) {
+          result = new Date(a - 0)
+        } else if (a instanceof RegExp) {
+          result = new RegExp(a.source, a.flags)
+        } else {
+          result = {}
+        }
+
+        map.set(a, result)
+
+        for (let key in a) {
+          if (a.hasOwnProperty(key))
+            result[key] = deepClone(a[key], map)
+        }
+
+        return result
+      } else {
+        return a
       }
     }
 
-    function sum(a, b, c) {
-      return a + b + c
+    const obj = {
+      a: [{ name: 'jack', age: 18 }],
+      b: new Date('2012-01-01'),
+      c: /\.jsx/i,
+      d: function (a, b) { return a + b },
+      e: (a, b) => a + b,
+      f: undefined,
+      g: null,
+      h: true
     }
 
-    const curriedSum = curry(sum)
-    console.log(curriedSum(1)(2)(3))
+    obj.i = obj
+
+    const b = deepClone(obj)
+    console.log(b)
   </script>
 </body>
 
