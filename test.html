@@ -25,14 +25,12 @@
               return a.apply(this, arguments)
             }
           } else {
-            result = (...args) => {
-              return a.call(undefined, ...args)
-            }
+            result = (...args) => a.call(undefined, ...args)
           }
         } else if (a instanceof Date) {
           result = new Date(a - 0)
         } else if (a instanceof RegExp) {
-          result = new RegExp(a.source, a.flags)
+          result = new RegExp(a.source, a.flag)
         } else {
           result = {}
         }
@@ -40,8 +38,9 @@
         map.set(a, result)
 
         for (let key in a) {
-          if (a.hasOwnProperty(key))
+          if (a.hasOwnProperty(key)) {
             result[key] = deepClone(a[key], map)
+          }
         }
 
         return result
@@ -51,20 +50,22 @@
     }
 
     const obj = {
-      a: [{ name: 'jack', age: 18 }],
-      b: new Date('2012-01-01'),
-      c: /\.jsx/i,
-      d: function (a, b) { return a + b },
-      e: (a, b) => a + b,
-      f: undefined,
-      g: null,
-      h: true
+      arr: [
+        { name: 'jack', age: 18 }
+      ],
+      fn: function (a, b) { return a + b },
+      f2: (a, b) => a + b,
+      d: new Date('2022-05-11'),
+      r: /\.jpg$/g,
+      n: 100,
+      l: null,
+      f: undefined
     }
 
-    obj.i = obj
+    obj.o = obj
 
-    const b = deepClone(obj)
-    console.log(b)
+    const obj2 = deepClone(obj)
+    console.log(obj2)
   </script>
 </body>
 
