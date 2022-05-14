@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function merge(nums1, nums2) {
+      let len1 = nums1.length - 1
+      let len2 = nums2.length - 1
+      const result = []
+      while (len1 >= 0 || len2 >= 0) {
+        if (len1 < 0) {
+          result.unshift(nums2[len2--])
+          continue
+        }
+        if (len2 < 0) {
+          result.unshift(nums1[len1--])
+          continue
+        }
+        result.unshift(nums1[len1] >= nums2[len2] ? nums1[len1--] : nums2[len2--])
+      }
+
+      return result
+    }
+
+    const nums1 = [1, 2, 3, 7, 9, 10]
+    const nums2 = [0, 4, 5, 6, 10, 13]
+    console.log(merge(nums1, nums2))
+  </script>
+</body>
+
+</html>
