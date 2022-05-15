@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const text = "这是一段文字https://www.showmebug.com/abc/DEEFs这是一段文字http://www.showmebug.com这是一段文字https://showmebug.comm这是一段文字"
+    function getUrl(text) {
+      const regex = /(https?:\/\/(www\.)?[-A-Z0-9]*(\.com)(\/[A-Z0-9]*)*)/ig
+      return text.match(regex)
+    }
+
+    console.log(getUrl(text))
+  </script>
+</body>
+
+</html>
