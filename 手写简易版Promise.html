@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class Promise2 {
+
+      constructor(fn) {
+        this.successQueue = []
+        this.failureQueue = []
+        const resolve = (data) => {
+          console.log(data)
+          setTimeout(() => {
+            this.successQueue.forEach(fn => fn())
+          })
+        }
+        const reject = (reason) => {
+          console.error(reason)
+          setTimeout(() => {
+            this.failureQueue.forEach(fn => fn())
+          })
+        }
+        fn(resolve, reject)
+      }
+
+      then(s, e) {
+        this.successQueue.push(s)
+        this.failureQueue.push(e)
+        return this
+      }
+    }
+
+    const p = new Promise2((resolve, reject) => {console.log('hi'); resolve('resolve')})
+    .then(() => {console.log('s1')}, () => {console.log('e1')})
+    .then(() => {console.log('s2')}, () => {console.log('e2')})
+    .then(() => {console.log('s3')}, () => {console.log('e3')})
+  </script>
+</body>
+</html>
