@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function atoi(str) {
+      const INT_MAX = Math.pow(2, 31) - 1
+      const INT_MIN = Math.pow(-2, 31)
+
+      // 去掉开头和末尾的空格
+      str = str.replace(/^\s+|\s+$/g, '')
+
+      // 如果去掉空格后长度为0或者不以正负号或数字开头则返回 0
+      if (str.length === 0 || !/[-+0-9]/.test(str.charAt(0))) return 0
+
+      // 获取符号
+      let sign = str.charAt(0)
+      if (/[-+]/.test(sign)) {
+        str = str.substr(1)
+      } else {
+        sign = '+'
+      }
+
+      // 查找第一个不为数字的位置，将后面的字符截掉
+      let i = 0
+      while (i < str.length) {
+        if (!/[0-9]/.test(str.charAt(i))) break
+        i++
+      }
+
+      str = str.substring(0, i)
+
+      // 转化为整数
+      let result = 0
+      for (let i = str.length - 1; i >= 0; i--) {
+        result += str.charAt(i) * Math.pow(10, str.length - 1 - i)
+      }
+
+      if (sign === '+') {
+        result = result > INT_MAX ? INT_MAX : result
+      } else {
+        result = 0 - result < INT_MIN ? INT_MIN : 0 - result
+      }
+
+      return result
+    };
+
+
+    console.log('   -42', ":", atoi('   -42'))
+    console.log('42', ":", atoi('42'))
+    console.log('+', ":", atoi('+'))
+    console.log('4193 with words', ":", atoi('4193 with words'))
+    console.log('words and 987', ":", atoi('words and 987'))
+    console.log('-91283472332', ":", atoi('-91283472332'))
+
+  </script>
+</body>
+
+</html>
